@@ -37,3 +37,5 @@ Java技术体系主要包括如下四个方面:
 4. Java虚拟机:各种硬件平台上Java虚拟机的实现
 
 ![image.png](https://cdn.jsdelivr.net/gh/yangyu2004/note-gen-image-sync@main/2025-08/5ba6e71d-9c8d-4404-ba10-86a9207a3ddf.png)
+
+可以简单类比一下:Java虚拟机是宿主，Java代码开发的程序则寄生在宿主之上！
