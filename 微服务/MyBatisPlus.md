@@ -130,7 +130,13 @@ yaml
 mybatis-plus:
   type-aliases-package: com.xxx.mp.domain.po  # 别名扫描包
   mapper-locations: "classpath:/mapper/**/*.xml"  # Mapper.xml文件地址
-  # 驼峰转换、二级缓存、id生成类型、更新策略（not null 只更新非空字段）等配置
+  configuration:
+    map-underscore-to-camel-case: true  # 驼峰命名自动映射
+    cache-enabled: true  # 二级缓存开关
+  global-config:
+    db-config:
+      id-type: auto  # 全局主键策略
+      update-strategy: not_null  # 更新策略：只更新非空字段
 ```
 
 ## 六、分页功能实现
@@ -149,7 +155,23 @@ public class BasePageVO<T> {
     protected long total;       // 总条数
     protected List<T> list;     // 分页数据列表
 
-    // 构造方法与getter/setter省略...
+    public BasePageVO() {}
+
+    public BasePageVO(long pageNum, long pageSize, long total, List<T> list) {
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+        this.total = total;
+        this.list = list;
+        this.totalPage = getPages();
+    }
+
+    public BasePageVO(long pageNum, long pageSize, long totalPage, long total, List<T> list) {
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+        this.totalPage = totalPage;
+        this.total = total;
+        this.list = list;
+    }
 
     protected long getPages() {
         if (getPageSize() == 0) {
@@ -161,6 +183,8 @@ public class BasePageVO<T> {
         }
         return pages;
     }
+
+    // Getter和Setter方法省略...
 }
 ```
 
@@ -203,10 +227,92 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 }
 ```
 
-## 七、MyBatis-Plus 核心优势
+## 七、代码生成器（AutoGenerator）
 
-* 对 MyBatis 增强升级，零侵入性，一键生成单表 CRUD。
-* 提供基于 `BaseMapper`的方法、代码生成、逻辑删除等实用功能。
+### 依赖引入
+
+xml
+
+```xml
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-generator</artifactId>
+    <version>${mybatisplus.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.velocity</groupId>
+    <artifactId>velocity-engine-core</artifactId>
+    <version>2.3</version>
+</dependency>
+```
+
+### 生成器示例代码
+
+java
+
+运行
+
+```java
+public class CodeGenerator {
+    public static void main(String[] args) {
+        // 全局配置
+        GlobalConfig gc = new GlobalConfig();
+        String projectPath = System.getProperty("user.dir");
+        gc.setOutputDir(projectPath + "/src/main/java");
+        gc.setAuthor("YourName");
+        gc.setOpen(false);
+        gc.setServiceName("%sService"); // 去掉Service接口的首字母I
+        gc.setIdType(IdType.ASSIGN_ID); // 主键策略
+
+        // 数据源配置
+        DataSourceConfig dsc = new DataSourceConfig();
+        dsc.setUrl("jdbc:mysql://localhost:3306/your_db?useUnicode=true&characterEncoding=utf8&useSSL=false");
+        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+        dsc.setUsername("root");
+        dsc.setPassword("root");
+        dsc.setDbType(DbType.MYSQL);
+
+        // 包配置
+        PackageConfig pc = new PackageConfig();
+        pc.setModuleName("yourModule");
+        pc.setParent("com.xxx.mp");
+        pc.setController("controller");
+        pc.setService("service");
+        pc.setServiceImpl("service.impl");
+        pc.setMapper("mapper");
+        pc.setEntity("entity");
+
+        // 策略配置
+        StrategyConfig strategy = new StrategyConfig();
+        strategy.setInclude("your_table"); // 表名
+        strategy.setNaming(NamingStrategy.underline_to_camel);
+        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
+        strategy.setEntityLombokModel(true);
+        strategy.setRestControllerStyle(true);
+        strategy.setControllerMappingHyphenStyle(true);
+        strategy.setTablePrefix("tb_"); // 表前缀
+
+        // 执行生成
+        AutoGenerator mpg = new AutoGenerator();
+        mpg.setGlobalConfig(gc);
+        mpg.setDataSource(dsc);
+        mpg.setPackageInfo(pc);
+        mpg.setStrategy(strategy);
+        mpg.execute();
+    }
+}
+```
+
+## 八、微服务与技术架构
+
+* **技术架构**：MyBatis-Plus + Docker + 分布式搜索引擎 + 分布式事务 + Redis
+* **微服务组件（SpringCloudAlibaba）**：Sentinel（限流降级）、Nacos（服务注册配置）、RocketMQ（消息队列）、Dubbo（RPC 通信）、Seata（分布式事务）、Alibaba Cloud ACM/OSS/ScheduleX/SMS 等
+* **功能范围**：增删改查、Excel 导入导出、文件下载上传
+
+## 九、MyBatis-Plus 核心优势
+
+* 对 MyBatis 增强升级，**零侵入性**，一键生成单表 CRUD。
+* 提供基于 `BaseMapper`的方法、代码生成、逻辑删除、分页插件等实用功能。
 * 单表 CRUD 只需引入依赖，继承 `BaseMapper`并指定泛型为对应实体即可实现。
 
 **依赖引入示例**：
@@ -232,3 +338,12 @@ xml
     <!-- 其他依赖版本省略... -->
 </properties>
 ```
+
+## 十、Spring Boot 自动配置原理
+
+MyBatis-Plus 的自动配置通过 `MybatisPlusAutoConfiguration`实现，关键流程：
+
+1. **配置加载**：通过 `spring.factories`文件触发 Spring 扫描加载 `MybatisPlusAutoConfiguration`。
+2. **条件注解**：`@Conditional`系列注解（如 `@ConditionalOnClass`、`@ConditionalOnBean`）控制配置生效条件。
+3. **配置绑定**：通过 `ConfigurationProperties`将 `application.yml`中的配置绑定到 Java 类（如 `MybatisPlusProperties`）。
+4. **自定义覆盖**：用户自定义的配置（如自定义 `SqlSessionFactory`）会覆盖自动配置中的默认属性。
