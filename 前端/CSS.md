@@ -345,3 +345,47 @@ HTML 元素默认分为 3 类，可通过 `display` 修改：
 ```
 
 ## 五、盒子模型
+
+盒子模型是 CSS 布局的核心概念，**所有 HTML 元素都可以看作一个 “盒子”**，浏览器通过这个模型计算元素的最终尺寸、位置及与其他元素的间距。
+
+| 组成部分                    | 作用说明                                                                                                                 |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **内容区（Content）** | 盒子的核心，显示文本、图片等实际内容。通过 `width`/`height` 直接设置其尺寸（默认仅作用于内容区）。                   |
+| **内边距（Padding）** | 内容区与边框之间的空白区域，**会继承盒子的背景色**。通过 `padding` 相关属性设置，不影响其他元素。                |
+| **边框（Border）**    | 包裹内边距和内容区的线条，可设置样式、宽度、颜色。通过 `border` 相关属性设置，会增加盒子总尺寸。                       |
+| **外边距（Margin）**  | 盒子与其他元素之间的空白区域，**透明无背景**，用于控制元素间距。通过 `margin` 相关属性设置，不影响盒子自身尺寸。 |
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS盒子模型</title>
+    <style>
+        .demo {
+            background-color: lightblue;
+            display: inline-block;
+            border: 5px solid blue;
+        }
+        .border-demo {
+            width: 300px;
+            height: 200px;
+            border-style: solid;
+            border-color: red;
+            border-width: 15px 5px 25px 35px;/* 上 右 下 左 */
+            border-style: solid dashed dotted double;/* solid是实线 dashed是虚线 dotted是点线 double是双线 */
+            padding: 20px;
+            margin: 15px;
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo">B站罗大佑</div>
+    <div class="border-demo">这是一个边框示例</div>
+</body>
+</html>
+```
+
+## 六、浮动
