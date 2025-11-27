@@ -1,43 +1,40 @@
-# CSS 基础语法与选择器
+# CSS 核心基础：语法、引入方式与常用属性
 
 ## 一、CSS 基本语法
 
-### 语法结构
+### 1. 语法结构
 
-css
+CSS 规则由**选择器**和**声明块**组成：
 
 ```css
 选择器 {
+  属性: 值;   /* 声明（键值对），可包含多条 */
   属性: 值;
-  属性: 值;
-  /* 声明为键值对，可包含多条 */
 }
 ```
 
-* **选择器**：要应用样式的 HTML 标签（所有元素 / 特定元素）。
+* **选择器**：指定要应用样式的 HTML 元素（所有元素 / 特定元素）。
 * **声明**：由 “属性：值” 组成，每条声明以分号结尾。
 
-### 示例
-
-css
+### 2. 基础示例
 
 ```css
 p {
-  color: #333;        /* 颜色 */
+  color: #333;        /* 文字颜色 */
   font-size: 16px;    /* 字体大小 */
-  font-family: Arial; /* 字体 */
-  text-align: center; /* 对齐方式 */
+  font-family: Arial; /* 字体类型 */
+  text-align: center; /* 文本对齐方式 */
   line-height: 1.5;   /* 行高 */
 }
 ```
 
 ## 二、CSS 引入方式
 
-CSS 有 3 种引入方式，**优先级：内联样式 > 内部样式表 > 外部样式表**（优先级高的样式会覆盖优先级低的）。
+CSS 有 3 种引入方式，**优先级：内联样式 > 内部样式表 > 外部样式表**（高优先级样式会覆盖低优先级）。
 
 ### 1. 内联样式
 
-直接写在 HTML 标签的 `style`属性中：
+直接写在 HTML 标签的 `style` 属性中（仅作用于当前标签）：
 
 ```html
 <h1 style="color: red;">这是一级标题（内联样式）</h1>
@@ -45,7 +42,7 @@ CSS 有 3 种引入方式，**优先级：内联样式 > 内部样式表 > 外�
 
 ### 2. 内部样式表
 
-写在 `<head>`标签的 `<style>`标签内：
+写在 `<head>` 内的 `<style>` 标签中（作用于当前页面）：
 
 ```html
 <head>
@@ -60,69 +57,64 @@ CSS 有 3 种引入方式，**优先级：内联样式 > 内部样式表 > 外�
 
 ### 3. 外部样式表
 
-通过 `<link>`标签引入独立的 `.css`文件：
+通过 `<link>` 引入独立的 `.css` 文件（可复用，作用于多个页面）：
 
 ```html
-<!-- HTML中引入 -->
+<!-- HTML 中引入外部样式表 -->
 <head>
   <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<!-- style.css文件内容 -->
+<!-- style.css 文件内容 -->
 h3 {
   color: yellow;
   font-size: 26px;
 }
 ```
 
-## 三、完整示例（HTML+CSS）
+### 完整示例（HTML+CSS 混合引入）
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>CSS引入方式</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSS 引入方式演示</title>
+  
   <!-- 外部样式表 -->
   <link rel="stylesheet" href="./css/style.css">
+  
   <!-- 内部样式表 -->
   <style>
     p {
       color: #333;
       font-size: 26px;
-      font-family: Arial;
       text-align: center;
-      line-height: 1.5;
-    }
-    h2 {
-      color: green;
-      font-size: 26px;
     }
   </style>
 </head>
 <body>
   <!-- 内联样式 -->
-  <h1 style="color: red;">这是一级标题（内联样式）</h1>
+  <h1 style="color: red;">一级标题（内联）</h1>
   <!-- 内部样式 -->
-  <h2>这是二级标题（内部样式）</h2>
+  <h2>二级标题（内部）</h2>
   <!-- 外部样式 -->
-  <h3>这是三级标题（外部样式）</h3>
+  <h3>三级标题（外部）</h3>
 </body>
 </html>
 ```
 
-## 四、CSS 选择器
+## 三、CSS 选择器
 
-选择器用于指定要设置样式的 HTML 元素，常见类型如下：
+选择器用于定位要设置样式的 HTML 元素，常见类型如下：
 
 ### 1. 元素选择器
 
-直接选择 HTML 标签：
+直接选择 HTML 标签（作用于所有匹配标签）：
 
 ```css
-/* 选择所有<h2>标签 */
+/* 选择所有 <h2> 标签 */
 h2 {
   color: green;
   font-size: 26px;
@@ -131,10 +123,10 @@ h2 {
 
 ### 2. 类选择器
 
-通过 `class`属性选择元素（可复用）：
+通过 `class` 属性选择元素（可复用，用 `.` 标识）：
 
 ```css
-/* 选择class="highlight"的元素 */
+/* 选择所有 class="highlight" 的元素 */
 .highlight {
   background-color: yellow;
 }
@@ -146,22 +138,22 @@ h2 {
 
 ### 3. ID 选择器
 
-通过 `id`属性选择元素（唯一，不可复用）：
+通过 `id` 属性选择元素（唯一，不可复用，用 `#` 标识）：
 
 ```css
-/* 选择id="header"的元素 */
+/* 选择 id="header" 的元素 */
 #header {
   font-size: 36px;
 }
 ```
 
 ```html
-<h4 id="header">ID选择器演示</h4>
+<h4 id="header">ID 选择器演示</h4>
 ```
 
 ### 4. 通用选择器
 
-选择页面所有元素：
+选择页面所有元素（用 `*` 标识）：
 
 ```css
 * {
@@ -171,10 +163,10 @@ h2 {
 
 ### 5. 子元素选择器
 
-选择父元素的**直接子元素**（用 `>`连接）：
+选择父元素的**直接子元素**（用 `>` 连接）：
 
 ```css
-/* 选择class="father"下的直接子元素class="son" */
+/* 选择 .father 的直接子元素 .son */
 .father > .son {
   color: yellowgreen;
   font-weight: bold;
@@ -192,7 +184,7 @@ h2 {
 选择父元素下的**所有后代元素**（用空格连接）：
 
 ```css
-/* 选择class="parent"下的所有<p>标签 */
+/* 选择 .parent 下的所有 <p> 标签 */
 .parent p {
   color: brown;
   font-size: 16px;
@@ -207,10 +199,10 @@ h2 {
 
 ### 7. 相邻选择器
 
-选择某个元素的**下一个相邻元素**（用 `+`连接）：
+选择元素的**下一个相邻元素**（用 `+` 连接）：
 
 ```css
-/* 选择<h3>后的第一个<p>标签 */
+/* 选择 <h3> 后的第一个 <p> 标签 */
 h3 + p {
   background-color: red;
 }
@@ -218,10 +210,10 @@ h3 + p {
 
 ### 8. 伪类选择器
 
-选择元素的**特定状态**（如 hover）：
+选择元素的**特定状态**（如 hover，用 `:` 标识）：
 
 ```css
-/* 鼠标 hover 时的样式 */
+/* 鼠标悬浮时的样式 */
 #element:hover {
   background-color: red;
 }
@@ -229,92 +221,70 @@ h3 + p {
 
 ### 9. 伪元素选择器
 
-为元素添加**额外内容 / 样式**（如 `::after`/`::before`）：
+为元素添加**额外内容 / 样式**（如 `::after`，用 `::` 标识）：
 
 ```css
-/* 在元素后添加内容 */
+/* 在元素后插入内容 */
 ::after {
-  content: "after";
+  content: "后缀内容";
 }
 ```
 
-## CSS常用属性
+## 四、CSS 常用属性与元素显示模式
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="renderer" content="webkit">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>CSS常用属性</title>
-  <style>
-    /* 样式代码区域 */
-  </style>
-</head>
-<body>
-  <!-- 页面内容区域 -->
-</body>
-</html>
-```
+### 1. 常用基础属性
 
-## 二、CSS 常用基础属性
+| 属性名               | 作用             | 示例值               |
+| -------------------- | ---------------- | -------------------- |
+| `background-color` | 设置背景颜色     | `aqua`/`brown`   |
+| `width`            | 设置元素宽度     | `150px`/`100px`  |
+| `height`           | 设置元素高度     | `100px`/`200px`  |
+| `font-size`        | 设置字体大小     | `60px`             |
+| `display`          | 改变元素显示模式 | `inline`/`block` |
 
-示例中用到的核心属性：
+### 2. 元素显示模式（核心）
 
-| 属性名               | 作用             | 示例值              |
-| -------------------- | ---------------- | ------------------- |
-| `background-color` | 设置背景颜色     | `aqua`/`brown`  |
-| `width`            | 设置元素宽度     | `150px`/`100px` |
-| `height`           | 设置元素高度     | `100px`/`200px` |
-| `font-size`        | 设置字体大小     | `60px`            |
-| `display`          | 改变元素显示模式 | `inline`          |
+HTML 元素默认分为 3 类，可通过 `display` 修改：
 
-## 三、元素显示模式（重点）
-
-HTML 元素默认分为 **块级元素**、**行内元素**、**行内块元素**，可通过 `display`属性修改。
-
-### 1. 块级元素（`display: block`）
+#### （1）块级元素（`display: block`）
 
 * 独占一行，宽度默认撑满父容器
 * 可设置 `width`/`height`
-* 示例（代码）：
+* 示例：
 
   ```css
   .block {
-    background-color: aqua; /* 背景色：浅蓝 */
+    background-color: aqua;
     width: 150px;
     height: 100px;
   }
   ```
 
   ```html
-  <div class="block">这是一个块元素</div>
+  <div class="block">这是块元素</div>
   ```
 
-### 2. 行内元素（`display: inline`）
+#### （2）行内元素（`display: inline`）
 
-* 多个元素并排显示，宽度由内容决定
+* 多个元素并排，宽度由内容决定
 * **不可设置 `width`/`height`**（设置无效）
-* 示例（代码）：
+* 示例：
 
   ```css
   .inline {
-    background-color: brown; /* 背景色：棕色 */
+    background-color: brown;
     width: 200px; /* 无效 */
-    height: 200px; /* 无效 */
   }
   ```
 
   ```html
-  <span class="inline">这是一个行内元素</span>
+  <span class="inline">这是行内元素</span>
   ```
 
-### 3. 行内块元素（`display: inline-block`）
+#### （3）行内块元素（`display: inline-block`）
 
-* 多个元素并排显示，同时可设置 `width`/`height`
-* 示例（代码）：
+* 并排显示 + 可设置宽高（结合块级 / 行内元素特点）
+* 示例：
 
   ```css
   .inline-block {
@@ -324,30 +294,26 @@ HTML 元素默认分为 **块级元素**、**行内元素**、**行内块元素*
   ```
 
   ```html
-  <img src="./logo.png" alt="" class="inline-block">
-  <img src="./logo.png" alt="" class="inline-block">
+  <img src="./logo.png" class="inline-block">
   ```
 
-### 4. 显示模式转换
+#### （4）显示模式转换
 
-可通过 `display`属性强制转换元素模式：
+通过 `display` 强制转换元素类型：
 
 ```html
 <!-- 块元素转成“行内元素” -->
-<div style="display:inline;background-color:red">这是一个转为行内的元素</div>
+<div style="display:inline; background-color:red">转为行内的元素</div>
 ```
 
-## 四、完整代码示例
+### 3. 完整代码示例（属性 + 显示模式）
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="renderer" content="webkit">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>CSS常用属性</title>
+  <title>CSS 常用属性演示</title>
   <style>
     .block {
       background-color: aqua;
@@ -356,8 +322,6 @@ HTML 元素默认分为 **块级元素**、**行内元素**、**行内块元素*
     }
     .inline {
       background-color: brown;
-      width: 200px;
-      height: 200px;
     }
     .inline-block {
       width: 100px;
@@ -366,17 +330,18 @@ HTML 元素默认分为 **块级元素**、**行内元素**、**行内块元素*
   </style>
 </head>
 <body>
-  <h1 style="font-size:60px 'kaiti'">这是一个font-size属性示例</h1>
-  <p style="line-height:40px">这是一段长文本长文本长文本</p>
+  <h1 style="font-size:60px">font-size 属性示例</h1>
+  <p style="line-height:40px">这是一段长文本</p>
   
-  <div class="block">这是一个块元素</div>
-  <span class="inline">这是一个行内元素</span>
+  <div class="block">块元素</div>
+  <span class="inline">行内元素</span>
   
-  <img src="./logo.png" alt="" class="inline-block">
-  <img src="./logo.png" alt="" class="inline-block">
-  <img src="./logo.png" alt="" class="inline-block">
+  <img src="./logo.png" class="inline-block">
+  <img src="./logo.png" class="inline-block">
   
-  <div style="display:inline;background-color:red">这是一个转为行内的元素</div>
+  <div style="display:inline; background-color:red">转换为行内的元素</div>
 </body>
 </html>
 ```
+
+## 五、盒子模型
