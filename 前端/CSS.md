@@ -431,3 +431,64 @@ HTML 元素默认分为 3 类，可通过 `display` 修改：
 * 脱标：脱离标准流。
 * 一行显示，顶部对齐
 * 具备行内块元素特性
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .father {
+            width: 400px;
+            height: 400px;
+            background-color: lightgray;
+            border: 3px solid black;
+            overflow: hidden;
+        }
+        .father::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .float-demo {
+            width: 200px;
+            height: 200px;
+            background-color: lightblue;
+            float: left;
+        }
+        .float-demo2 {
+            width: 200px;
+            height: 200px;
+            background-color: lightgreen;
+            float: right;
+        }
+        </style>
+</head>
+<body>
+    <div class="father">
+        <div class="float-demo">左浮动</div>
+        <div class="float-demo">左浮动</div>
+        <div class="float-demo">左浮动</div>
+        <div class="float-demo">左浮动</div>
+        <div class="float-demo2">右浮动</div>
+        <div class="float-demo2">右浮动</div>
+        <div class="float-demo2">右浮动</div>
+    </div>
+
+  
+</body>
+</html>
+```
+
+### 定位
+
+CSS 中定位的核心是通过 `position` 属性定义：
+
+相对定位
+
+绝对定位
+
+固定定位
