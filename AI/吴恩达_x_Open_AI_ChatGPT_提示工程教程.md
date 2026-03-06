@@ -27,3 +27,19 @@
 
 - 知识边界不清晰，可能会出现幻觉
 - 优化建议：若想让模型基于文本回答问题，可先要求模型从文本中找到相关引用，再使用这些引用回答问题
+
+### Prompt 设计指南
+
+* **Be clear and specific**
+  
+  保持清晰且具体。
+* **Analyze why result does not give desired output.**
+  
+  分析结果为何未能达到预期输出。
+* **Refine the idea and the prompt**
+  
+  优化你的核心思路与提示词。
+* **Repeat**
+  
+  重复迭代上述过程。
+
