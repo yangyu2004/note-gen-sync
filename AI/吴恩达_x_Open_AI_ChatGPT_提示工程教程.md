@@ -43,3 +43,18 @@
   
   重复迭代上述过程。
 
+### Prompt 迭代过程
+
+* **Try something**
+  
+  先尝试一个初始方案（写出第一版提示词）。
+* **Analyze where the result does not give what you want**
+  
+  分析输出结果在哪些地方没有达到你的预期。
+* **Clarify instructions, give more time to think**
+  
+  明确指令，给模型更多思考时间（例如：要求分步推理、先思考再回答）。
+* **Refine prompts with a batch of examples**
+  
+  通过一批示例来优化提示词（例如：使用少样本学习，提供输入 - 输出示例）。
+
